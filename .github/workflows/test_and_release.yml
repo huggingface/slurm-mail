@@ -35,7 +35,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - id: set-matrix
         name: set-matrix
         run: |
@@ -48,9 +48,9 @@ jobs:
       matrix:
         python-version: ${{fromJson(needs.generate_python_matrix.outputs.matrix)}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -68,7 +68,7 @@ jobs:
           pytest -v
 
       - name: Store coverage file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: coverage-${{ matrix.python-version }}
           path: .coverage.${{ matrix.python-version }}
@@ -78,9 +78,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: unit_tests
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         id: download
         with:
           pattern: coverage-*
@@ -88,13 +88,13 @@ jobs:
 
       - name: Coverage comment
         id: coverage_comment
-        uses: py-cov-action/python-coverage-comment-action@v3
+        uses: py-cov-action/python-coverage-comment-action@4c2eefcda8b94596768855a80ac94edc61aba669  # v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_COVERAGE_FILES: true
 
       - name: Store Pull Request comment to be posted
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         if: steps.coverage_comment.outputs.COMMENT_FILE_WRITTEN == 'true'
         with:
           name: python-coverage-comment-action
@@ -106,7 +106,7 @@ jobs:
       contents: read
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: Create tar
         id: create_tar
         run: |
@@ -124,14 +124,14 @@ jobs:
       - name: Create md5sum for tar file
         run: md5sum ${{ env.TAR_NAME }} | awk '{ print $1}' > ${{ env.TAR_NAME }}.md5sum
       - name: Store tar file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: tar_file
           path: ${{ env.TAR_NAME }}
           if-no-files-found: error
           retention-days: 5
       - name: Store tar file md5sum
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: tar_file_md5sum
           path: ${{ env.TAR_NAME }}.md5sum
@@ -144,7 +144,7 @@ jobs:
       contents: read
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: Create RHEL 7 RPM
         run: build-tools/RedHat_7/build.sh
       - name: Get package name
@@ -156,14 +156,14 @@ jobs:
       - name: Create md5sum for RHEL 7 RPM
         run: md5sum ${{ env.RHEL7_RPM }} > ${{ env.RHEL7_RPM }}.md5sum
       - name: Store RHEL 7 RPM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: rhel7_pkg
           path: ${{ env.RHEL7_RPM }}
           if-no-files-found: error
           retention-days: 5
       - name: Store RHEL 7 RPM md5sum
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: rhel7_pkg_md5sum
           path: ${{ env.RHEL7_RPM }}.md5sum
@@ -176,7 +176,7 @@ jobs:
       contents: read
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: Create RHEL 8 RPM
         run: build-tools/RedHat_8/build.sh
       - name: Get package name
@@ -188,14 +188,14 @@ jobs:
       - name: Create md5sum for RHEL 8 RPM
         run: md5sum ${{ env.RHEL8_RPM }} > ${{ env.RHEL8_RPM }}.md5sum
       - name: Store RHEL 8 RPM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: rhel8_pkg
           path: ${{ env.RHEL8_RPM }}
           if-no-files-found: error
           retention-days: 5
       - name: Store RHEL 8 RPM md5sum
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: rhel8_pkg_md5sum
           path: ${{ env.RHEL8_RPM }}.md5sum
@@ -208,7 +208,7 @@ jobs:
       contents: read
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: Create RHEL 9 RPM
         run: build-tools/RedHat_9/build.sh
       - name: Get package name
@@ -220,14 +220,14 @@ jobs:
       - name: Create md5sum for RHEL 9 RPM
         run: md5sum ${{ env.RHEL9_RPM }} > ${{ env.RHEL9_RPM }}.md5sum
       - name: Store RHEL 9 RPM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: rhel9_pkg
           path: ${{ env.RHEL9_RPM }}
           if-no-files-found: error
           retention-days: 5
       - name: Store RHEL 9 RPM md5sum
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: rhel9_pkg_md5sum
           path: ${{ env.RHEL9_RPM }}.md5sum
@@ -240,7 +240,7 @@ jobs:
       contents: read
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: Create SUSE 15 RPM
         run: build-tools/OpenSUSE_15/build.sh
       - name: Get package name
@@ -252,14 +252,14 @@ jobs:
       - name: Create md5sum for SUSE 15 RPM
         run: md5sum ${{ env.SUSE15_RPM }} > ${{ env.SUSE15_RPM }}.md5sum
       - name: Store SUSE 15 RPM
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: suse15_pkg
           path: ${{ env.SUSE15_RPM }}
           if-no-files-found: error
           retention-days: 5
       - name: Store SUSE 15 RPM md5sum
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: suse15_pkg_md5sum
           path: ${{ env.SUSE15_RPM }}.md5sum
@@ -272,7 +272,7 @@ jobs:
       contents: read
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: Create Ubuntu 20
         run: build-tools/Ubuntu_20.04/build.sh
       - name: Get package name
@@ -284,14 +284,14 @@ jobs:
       - name: Create md5sum for Ubuntu 20 package
         run: md5sum ${{ env.UBUNTU20_PKG }} > ${{ env.UBUNTU20_PKG }}.md5sum
       - name: Store Ubuntu 20 package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: ubuntu20_pkg
           path: ${{ env.UBUNTU20_PKG }}
           if-no-files-found: error
           retention-days: 5
       - name: Store Ubuntu 20 package md5sum
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: ubuntu20_pkg_md5sum
           path: ${{ env.UBUNTU20_PKG }}.md5sum
@@ -304,7 +304,7 @@ jobs:
       contents: read
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: Create Ubuntu 22
         run: build-tools/Ubuntu_22.04/build.sh
       - name: Get package name
@@ -316,14 +316,14 @@ jobs:
       - name: Create md5sum for Ubuntu 22 package
         run: md5sum ${{ env.UBUNTU22_PKG }} > ${{ env.UBUNTU22_PKG }}.md5sum
       - name: Store Ubuntu 22 package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: ubuntu22_pkg
           path: ${{ env.UBUNTU22_PKG }}
           if-no-files-found: error
           retention-days: 5
       - name: Store Ubuntu 22 package md5sum
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
           name: ubuntu22_pkg_md5sum
           path: ${{ env.UBUNTU22_PKG }}.md5sum
@@ -335,7 +335,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - id: set-matrix
         name: set-matrix
         run: |
@@ -353,13 +353,13 @@ jobs:
         slurm-version: ${{fromJson(needs.generate_slurm_matrix.outputs.matrix)}}
     steps:
       - name: Log in to the container registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           name: 'rhel7_pkg'
           path: tests/integration/
@@ -378,13 +378,13 @@ jobs:
         slurm-version: ${{fromJson(needs.generate_slurm_matrix.outputs.matrix)}}
     steps:
       - name: Log in to the container registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           name: 'rhel8_pkg'
           path: tests/integration/
@@ -403,13 +403,13 @@ jobs:
         slurm-version: ${{fromJson(needs.generate_slurm_matrix.outputs.matrix)}}
     steps:
       - name: Log in to the container registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           name: 'rhel9_pkg'
           path: tests/integration/
@@ -428,13 +428,13 @@ jobs:
         slurm-version: ${{fromJson(needs.generate_slurm_matrix.outputs.matrix)}}
     steps:
       - name: Log in to the container registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           name: 'suse15_pkg'
           path: tests/integration/
@@ -453,13 +453,13 @@ jobs:
         slurm-version: ${{fromJson(needs.generate_slurm_matrix.outputs.matrix)}}
     steps:
       - name: Log in to the container registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           name: 'ubuntu20_pkg'
           path: tests/integration/
@@ -478,13 +478,13 @@ jobs:
         slurm-version: ${{fromJson(needs.generate_slurm_matrix.outputs.matrix)}}
     steps:
       - name: Log in to the container registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           name: 'ubuntu22_pkg'
           path: tests/integration/
@@ -507,41 +507,41 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: create download directory
         run: |
           mkdir downloads
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           pattern: 'rhel7_pkg*'
           path: downloads
           merge-multiple: true
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           pattern: 'rhel8_pkg*'
           path: downloads
           merge-multiple: true
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           pattern: 'rhel9_pkg*'
           path: downloads
           merge-multiple: true
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           pattern: 'suse15_pkg*'
           path: downloads
           merge-multiple: true
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           pattern: 'tar_file*'
           path: downloads
           merge-multiple: true
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           pattern: 'ubuntu20_pkg*'
           path: downloads
           merge-multiple: true
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4
         with:
           pattern: 'ubuntu22_pkg*'
           path: downloads
