@@ -11,7 +11,7 @@ jobs:
     outputs:
       versions: ${{ join(fromJson(steps.set-versions.outputs.versions), '|') }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - id: set-versions
         name: set-versions
         run: |
@@ -25,7 +25,7 @@ jobs:
         os: ["el7", "el8", "el9", "sl15", "ub20", "ub22"]
     steps:
       - name: "Purge old slurm-${{ matrix.os }} versions"
-        uses: actions/delete-package-versions@0d39a63126868f5eefaa47169615edd3c0f61e20  # v4
+        uses: actions/delete-package-versions@0d39a63126868f5eefaa47169615edd3c0f61e20
         with: 
           package-name: "slurm-mail/slurm-${{ matrix.os }}"
           package-type: 'container'
